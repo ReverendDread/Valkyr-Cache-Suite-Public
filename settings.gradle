@@ -1,0 +1,17 @@
+rootProject.name = 'ValkyrCacheSuite'
+
+include ':SuitePlugins'
+include ':ValkyrSuite'
+
+include 'SuitePlugins:ItemPlugin'
+include 'SuitePlugins:NPCPlugin'
+include 'SuitePlugins:ObjectPlugin'
+include 'SuitePlugins:SequencePlugin'
+include 'SuitePlugins:SpritePlugin'
+include 'SuitePlugins:MapPacker'
+include 'SuitePlugins:TexturePlugin'
+include 'SuitePlugins:ModelPacker'
+include 'SuitePlugins:EnumPlugin'
+include 'SuitePlugins:SpotAnimPlugin'
+include 'SuitePlugins:CS2Plugin'
+

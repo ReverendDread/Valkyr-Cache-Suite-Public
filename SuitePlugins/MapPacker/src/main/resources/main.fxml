@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.media.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<TabPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <tabs>
+      <Tab text="World Map">
+         <content>
+            <AnchorPane fx:id="worldAnchor">
+               <children>
+                  <Canvas fx:id="canvas" height="256.0" width="256.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <HBox layoutX="150.0" layoutY="260.0" spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <children>
+                        <TextField fx:id="regionIdField" layoutX="74.0" layoutY="148.0" promptText="Enter region id..." AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                        <Button fx:id="regionIdSubmit" mnemonicParsing="false" text="Set" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+      <Tab text="Map Packer">
+         <content>
+            <VBox alignment="CENTER">
+               <children>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0">
+                     <children>
+                        <HBox alignment="CENTER" layoutX="20.0" layoutY="20.0" spacing="10.0">
+                           <children>
+                              <RadioButton fx:id="folderRadio" mnemonicParsing="false" selected="true">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="loadType" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <VBox fx:id="folderFileBox" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox spacing="10.0">
+                                       <children>
+                                          <TextField fx:id="mapFolderText" promptText=".pack File" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <Button fx:id="mapFolderBrowse" mnemonicParsing="false" text="Browse">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                    <HBox spacing="10.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <RadioButton fx:id="singleFileRadio" mnemonicParsing="false" toggleGroup="$loadType" />
+                              <VBox fx:id="singleFileBox" disable="true" spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox spacing="10.0">
+                                       <children>
+                                          <TextField fx:id="lsText" promptText="Landscape File" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <Button fx:id="lsBrowse" mnemonicParsing="false" text="Browse">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                    <HBox spacing="10.0">
+                                       <children>
+                                          <TextField fx:id="objText" promptText="Objects File" HBox.hgrow="ALWAYS">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </TextField>
+                                          <Button fx:id="objBrowse" mnemonicParsing="false" text="Browse">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
+                        <HBox alignment="CENTER" layoutX="20.0" layoutY="119.0" spacing="10.0">
+                           <children>
+                              <RadioButton fx:id="regionIdRadio" mnemonicParsing="false" selected="true">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="regionType" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <HBox fx:id="regionIdBox" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <TextField fx:id="regionID" promptText="Region ID" HBox.hgrow="ALWAYS">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <RadioButton fx:id="regionXYRadio" mnemonicParsing="false" toggleGroup="$regionType">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </RadioButton>
+                              <HBox fx:id="regionXYBox" disable="true" spacing="10.0">
+                                 <children>
+                                    <TextField fx:id="regionXText" promptText="Region X">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </TextField>
+                                    <TextField fx:id="regionYText" promptText="Region Y">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <RadioButton fx:id="worldRadio" mnemonicParsing="false" toggleGroup="$regionType">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </RadioButton>
+                              <HBox fx:id="worldXYBox" disable="true" spacing="10.0">
+                                 <children>
+                                    <TextField fx:id="worldXText" promptText="World X">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </TextField>
+                                    <TextField fx:id="worldYText" promptText="World Y">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
+                        <HBox spacing="10.0">
+                           <children>
+                              <TextField promptText="XTEAs (Leave blank for default) Format: 0,0,0,0" HBox.hgrow="ALWAYS" fx:id="xteaText">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </TextField>
+                              <Button fx:id="genXteas" mnemonicParsing="false" text="Generate">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </HBox>
+                        <Button fx:id="saveBtn" mnemonicParsing="false" text="Save">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </Tab>
+   </tabs>
+</TabPane>

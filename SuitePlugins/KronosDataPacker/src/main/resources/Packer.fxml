@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tool.packer.Packer">
+   <children>
+      <TabPane layoutX="33.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Item" />
+          <Tab text="NPC" />
+            <Tab text="Object" />
+            <Tab text="Spot Anim" />
+            <Tab text="Sequence" />
+            <Tab text="Map" />
+            <Tab text="Interface" />
+            <Tab text="Sprite" />
+            <Tab text="CS2" />
+            <Tab text="Enum" />
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
