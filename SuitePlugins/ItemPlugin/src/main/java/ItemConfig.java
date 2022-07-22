@@ -19,6 +19,15 @@ import suite.annotation.type.TextureIdentifier;
 /**
  * @author ReverendDread Sep 17, 2019
  */
+
+/**
+ * @TODO
+ * Opcode 3, Opcode 9, Opcode 10, Opcode 14, Opcode18, Opcode19, Opcode 20,  Opcode 22,
+ * Opcode 61, Opcode 68, Opcode 72, Opcode 84, Opcode 87, Opcode 94, Opcode 121 Opcode 127, Opcode 141,
+ * Opcode 154, Opcode 158, Opcode 167, Opcode 169,  Opcode 171, Opcode 175, Opcode 179, Opcode 192, Opcode 199,
+ * Opcode 200, Opcode 201, Opcode 207, Opcode 234, Opcode 252
+ */
+
 public class ItemConfig extends ConfigExtensionBase {
 
 	@Override
@@ -98,6 +107,8 @@ public class ItemConfig extends ConfigExtensionBase {
 			maleHeadModel2 = buffer.readUnsignedShort();
 		} else if (opcode == 93) {
 			femaleHeadModel2 = buffer.readUnsignedShort();
+		} else if (opcode == 94) {
+			category = buffer.readUnsignedShort();
 		} else if (opcode == 95) {
 			zan2d = buffer.readUnsignedShort();
 		} else if (opcode == 97) {
@@ -303,6 +314,10 @@ public class ItemConfig extends ConfigExtensionBase {
 			buffer.writeByte(93);
 			buffer.writeShort(femaleHeadModel2);
 		}
+		if (category != -1) {
+			buffer.writeByte(94);
+			buffer.writeShort(category);
+		}
 		
 		if (zan2d != 0) {
 			buffer.writeByte(95);
@@ -475,6 +490,7 @@ public class ItemConfig extends ConfigExtensionBase {
 	public int xan2d = 0;
 	public int yan2d = 0;
 	public int zan2d = 0;
+	private int category;
 	public int cost = 1;
 	public boolean isTradeable;
 	public int stackable = 0;
