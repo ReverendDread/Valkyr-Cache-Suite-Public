@@ -132,7 +132,7 @@ public class SpriteEditor extends FXController {
 		create.setOnAction((action) -> {
 			try {
 				/* Default image added to sprite collection upon creating one.*/
-				BufferedImage placeholder = ImageIO.read(Main.class.getClassLoader().getResource("hijabnigga.jpeg"));
+				BufferedImage placeholder = ImageIO.read(Main.class.getClassLoader().getResource("turbantroll.jpeg"));
 				SpriteContainer sprite = (SpriteContainer) PluginManager.get().getConfigForType(PluginType.SPRITE).getClass().newInstance();
 				int id = Dialogues.integerInput("Enter an id.", "Enter an id, otherwise the next in order will be created.", findNextAvailable());
 				if (id != -1) {
