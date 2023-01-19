@@ -39,8 +39,8 @@
 //	public void test() {
 //		PublicTestClass testClass = new PublicTestClass();
 //
-//		String newValue = "BALLSACK";
-//		assertTrue(testClass.someString.equals("Vagina"));
+//		String newValue = "placeholder";
+//		assertTrue(testClass.someString.equals("apple"));
 //		log.info("value of testClass is {}", testClass.someString);
 //		for(Field field : testClass.getClass().getFields()) {
 //			log.info("Field name is {}", field.getName());
@@ -52,13 +52,13 @@
 //	}
 //
 //	@Test
-//	public void nig() {
+//	public void dude() {
 //
 //		TestByteClass testClass = new TestByteClass();
 //		ComboBox<String> box = new ComboBox<String>();
 //		box.getItems().add("10");
 //
-//		assertTrue(testClass.niggers[0] == 50);
+//		assertTrue(testClass.dudes[0] == 50);
 //
 //		for(Field field : testClass.getClass().getFields()) {
 //			log.info("Field name is {}", field.getName());
@@ -66,23 +66,23 @@
 //		}
 //
 //
-//		assertTrue(testClass.niggers[0] == 10);
+//		assertTrue(testClass.dudes[0] == 10);
 //
 //	}
 //
 //
 //	class PrivateTestClass {
-//		private String someString = "Penis";
+//		private String someString = "testString1";
 //	}
 //
 //	class PublicTestClass {
-//		public String someString = "Vagina";
+//		public String someString = "testString2";
 //	}
 //
 //
 //	class TestByteClass {
 //
-//		public byte[] niggers = {50};
+//		public byte[] dudes = {50};
 //
 //	}
 //

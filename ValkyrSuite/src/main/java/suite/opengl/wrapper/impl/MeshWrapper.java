@@ -222,9 +222,9 @@ public class MeshWrapper extends OpenGLWrapper<Mesh> {
 
             if (showWeights) {
                 glDisable(GL_DEPTH_TEST); //have to disable before drawing txt
-                font.drawString(verticesX[faceA] / MODEL_SCALE, verticesY[faceA] / MODEL_SCALE, "nigger 1");
-                font.drawString(verticesX[faceB] / MODEL_SCALE, verticesY[faceB] / MODEL_SCALE, "nigger 2");
-                font.drawString(verticesX[faceC] / MODEL_SCALE, verticesY[faceC] / MODEL_SCALE, "nigger 3");
+                font.drawString(verticesX[faceA] / MODEL_SCALE, verticesY[faceA] / MODEL_SCALE, "dude 1");
+                font.drawString(verticesX[faceB] / MODEL_SCALE, verticesY[faceB] / MODEL_SCALE, "dude 2");
+                font.drawString(verticesX[faceC] / MODEL_SCALE, verticesY[faceC] / MODEL_SCALE, "dude 3");
                 glEnable(GL_DEPTH_TEST);
             }
 
