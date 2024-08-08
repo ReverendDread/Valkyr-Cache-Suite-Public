@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<VBox stylesheets="@modena_dark.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="suite.controller.Selection">
+   <children>
+      <ToolBar fx:id="toolBar">
+         <items>
+            <Button mnemonicParsing="false" onAction="#save" text="Save" />
+            <Button mnemonicParsing="false" onAction="#open_cache" text="Load Cache" />
+            <Separator prefWidth="25.0" />
+            <Label text="Editor Selection:" />
+            <ComboBox fx:id="toolChoice" prefWidth="150.0" />
+            <Button fx:id="open" mnemonicParsing="false" onAction="#openTool" prefWidth="80.0" text="Open" />
+            <Separator prefWidth="25.0" />
+            <Button mnemonicParsing="false" onAction="#open_settings" text="Settings" />
+            <Separator prefWidth="25.0" />
+            <StackPane>
+               <children>
+                  <ProgressBar fx:id="progress_bar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="545.0" progress="0.0" visible="false" />
+                  <Text fx:id="progress_text" fill="GAINSBORO" strokeType="OUTSIDE" strokeWidth="0.0" text="TEXT" textAlignment="CENTER" />
+               </children>
+            </StackPane>
+         </items>
+      </ToolBar>
+      <TabPane fx:id="tabs" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />
+   </children>
+</VBox>
