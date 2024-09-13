@@ -1,12 +1,9 @@
-import com.google.common.collect.Maps
-import javafx.util.Pair
+package dev.dread.map.cfg
+
 import store.io.impl.InputStream
 import store.io.impl.OutputStream
 import store.plugin.extension.ConfigExtensionBase
-import store.utilities.ReflectionUtils
-import suite.annotation.OrderType
 import java.lang.reflect.Field
-import java.util.function.Consumer
 
 /**
  *

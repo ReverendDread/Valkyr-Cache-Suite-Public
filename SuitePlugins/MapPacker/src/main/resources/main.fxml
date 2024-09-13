@@ -1,40 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.*?>
-<?import javafx.scene.media.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<TabPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <tabs>
-      <Tab text="World Map">
-         <content>
-            <AnchorPane fx:id="worldAnchor">
-               <children>
-                  <Canvas fx:id="canvas" height="256.0" width="256.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <HBox layoutX="150.0" layoutY="260.0" spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                     <children>
-                        <TextField fx:id="regionIdField" layoutX="74.0" layoutY="148.0" promptText="Enter region id..." AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-                        <Button fx:id="regionIdSubmit" mnemonicParsing="false" text="Set" />
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
-         </content>
-      </Tab>
       <Tab text="Map Packer">
          <content>
             <VBox alignment="CENTER">
@@ -119,7 +101,7 @@
                               </RadioButton>
                               <HBox fx:id="regionIdBox" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <TextField fx:id="regionID" promptText="Region ID" HBox.hgrow="ALWAYS">
+                                    <TextField fx:id="regionID" promptText="Region ID (or bottom left most id)" HBox.hgrow="ALWAYS">
                                        <font>
                                           <Font size="10.0" />
                                        </font>
@@ -175,6 +157,7 @@
                            </children>
                         </HBox>
                         <Separator prefWidth="200.0" />
+                        <Text fill="#c9a400" strokeType="OUTSIDE" strokeWidth="0.0" text="If using .pack file, these will be generated regardless." />
                         <HBox spacing="10.0">
                            <children>
                               <TextField promptText="XTEAs (Leave blank for default) Format: 0,0,0,0" HBox.hgrow="ALWAYS" fx:id="xteaText">
@@ -204,6 +187,21 @@
                   </VBox>
                </children>
             </VBox>
+         </content>
+      </Tab>
+      <Tab text="World Map">
+         <content>
+            <AnchorPane fx:id="worldAnchor">
+               <children>
+                  <Canvas fx:id="canvas" height="256.0" width="256.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <HBox layoutX="150.0" layoutY="260.0" spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <children>
+                        <TextField fx:id="regionIdField" layoutX="74.0" layoutY="148.0" promptText="Enter region id..." AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                        <Button fx:id="regionIdSubmit" mnemonicParsing="false" text="Set" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
          </content>
       </Tab>
    </tabs>

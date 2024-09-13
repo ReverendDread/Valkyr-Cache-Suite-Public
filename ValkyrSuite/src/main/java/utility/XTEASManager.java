@@ -7,7 +7,6 @@ import java.util.Objects;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import lombok.Getter;
 import lombok.Setter;
 import suite.Constants;
 
@@ -42,7 +41,7 @@ public class XTEASManager {
 
 			@Override
 			public String filePath() {
-				return "C:\\Users\\Andrew\\Desktop\\rev190\\region_keys.json";
+				return Constants.settings.xteaFile;
 			}
 
 		}.load();

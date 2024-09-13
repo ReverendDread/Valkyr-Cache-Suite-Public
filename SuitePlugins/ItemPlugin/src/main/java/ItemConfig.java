@@ -19,15 +19,6 @@ import suite.annotation.type.TextureIdentifier;
 /**
  * @author ReverendDread Sep 17, 2019
  */
-
-/**
- * @TODO
- * Opcode 3, Opcode 9, Opcode 10, Opcode 14, Opcode18, Opcode19, Opcode 20,  Opcode 22,
- * Opcode 61, Opcode 68, Opcode 72, Opcode 84, Opcode 87, Opcode 94, Opcode 121 Opcode 127, Opcode 141,
- * Opcode 154, Opcode 158, Opcode 167, Opcode 169,  Opcode 171, Opcode 175, Opcode 179, Opcode 192, Opcode 199,
- * Opcode 200, Opcode 201, Opcode 207, Opcode 234, Opcode 252
- */
-
 public class ItemConfig extends ConfigExtensionBase {
 
 	@Override
@@ -52,10 +43,16 @@ public class ItemConfig extends ConfigExtensionBase {
 			if (yOffset2d > 32767) {
 				yOffset2d -= 65536;
 			}
+		} else if (opcode == 9) {
+			unknown1 = buffer.readString();
 		} else if (opcode == 11) {
 			stackable = 1;
 		} else if (opcode == 12) {
 			cost = buffer.readInt();
+		} else if (opcode == 13) {
+			wearPos1 = buffer.readByte();
+		} else if (opcode == 14) {
+			wearPos2 = buffer.readByte();
 		} else if (opcode == 16) {
 			members = true;
 		} else if (opcode == 23) {
@@ -68,6 +65,8 @@ public class ItemConfig extends ConfigExtensionBase {
 			femaleOffset = buffer.readUnsignedByte();
 		} else if (opcode == 26) {
 			femaleModel1 = buffer.readUnsignedShort();
+		} else if (opcode == 27) {
+			wearPos3 = buffer.readByte();
 		} else if (opcode >= 30 && opcode < 35) {
 			options[opcode - 30] = buffer.readString();
 			if (options[opcode - 30].equalsIgnoreCase("Hidden")) {
@@ -95,6 +94,8 @@ public class ItemConfig extends ConfigExtensionBase {
 			shiftClickDropIndex = buffer.readByte();
 		} else if (opcode == 65) {
 			isTradeable = true;
+		} else if (opcode == 75) {
+			weight = buffer.readShort();
 		} else if (opcode == 78) {
 			maleModel2 = buffer.readUnsignedShort();
 		} else if (opcode == 79) {
@@ -120,7 +121,6 @@ public class ItemConfig extends ConfigExtensionBase {
 				countObj = new int[10];
 				countCo = new int[10];
 			}
-
 			countObj[opcode - 100] = buffer.readUnsignedShort();
 			countCo[opcode - 100] = buffer.readUnsignedShort();
 		} else if (opcode == 110) {
@@ -207,6 +207,11 @@ public class ItemConfig extends ConfigExtensionBase {
 			buffer.writeShort(yOffset2d);
 		}
 
+		if (unknown1 != null) {
+			buffer.writeByte(9);
+			buffer.writeString(unknown1);
+		}
+
 		if (stackable != 0) {
 			buffer.writeByte(11);
 		}
@@ -214,6 +219,16 @@ public class ItemConfig extends ConfigExtensionBase {
 		if (cost != 1) {
 			buffer.writeByte(12);
 			buffer.writeInt(cost);
+		}
+
+		if (wearPos1 != -1) {
+			buffer.writeByte(13);
+			buffer.writeByte(wearPos1);
+		}
+
+		if (wearPos2 != -1) {
+			buffer.writeByte(14);
+			buffer.writeByte(wearPos2);
 		}
 
 		if (members) {
@@ -240,6 +255,11 @@ public class ItemConfig extends ConfigExtensionBase {
 		if (femaleModel1 > -1) {
 			buffer.writeByte(26);
 			buffer.writeShort(femaleModel1);
+		}
+
+		if (wearPos3 != -1) {
+			buffer.writeByte(27);
+			buffer.writeByte(wearPos3);
 		}
 		
 		for (int index = 0; index < 5; index++) {
@@ -507,6 +527,9 @@ public class ItemConfig extends ConfigExtensionBase {
 	public int boughtTemplateId = -1;
 	public int placeholderId = -1;
 	public int placeholderTemplateId = -1;
+	public String unknown1;
+	public int weight;
+	public int wearPos1 = -1, wearPos2 = -1, wearPos3 = -1;
 	public HashMap<Integer, Object> params = null;
 
 	private static Map<Field, Integer> fieldPriorities;

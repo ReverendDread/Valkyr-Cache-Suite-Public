@@ -1,4 +1,4 @@
-package util;
+package dev.dread.map.util;
 
 /**
  * @author Kyle Friz

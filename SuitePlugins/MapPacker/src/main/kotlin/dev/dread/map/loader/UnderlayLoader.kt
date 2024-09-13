@@ -1,3 +1,6 @@
+package dev.dread.map.loader
+
+import dev.dread.map.cfg.UnderlayConfig
 import store.CacheLibrary
 import store.io.impl.InputStream
 import store.plugin.PluginType
@@ -11,19 +14,20 @@ import java.util.*
  * @author ReverendDread on 3/22/2020
  * https://www.rune-server.ee/members/reverenddread/
  */
-@LoaderDescriptor(author = "ReverendDread", version = "317/OSRS/742", type = PluginType.FLO)
-class OverlayLoader {
+@LoaderDescriptor(author = "ReverendDread", version = "317/OSRS/742", type = PluginType.FLU)
+class UnderlayLoader {
 
-    val overlays: HashMap<Int, OverlayConfig> = hashMapOf()
+    val underlays: HashMap<Int, UnderlayConfig> = hashMapOf()
 
-    fun load(): OverlayLoader {
+    fun load(): UnderlayLoader {
         try {
             val index = CacheLibrary.get().getIndex(index)
             val files = index.getArchive(archive).fileIds
             for (id in files) {
                 val file = index.getArchive(archive).getFile(id)
                 file?.apply {
-                    val definition = OverlayConfig()
+                    val definition = UnderlayConfig()
+                    definition.id = id
                     val buffer = InputStream(file.data)
                     buffer.buffer?.apply {
                         while (true) {
@@ -31,8 +35,8 @@ class OverlayLoader {
                             if (opcode == 0) break
                             definition.decode(opcode, buffer)
                         }
+                        underlays[id] = definition
                     }
-                    overlays[id] = definition
                     Selection.progressListener.pluginNotify("($id/${files.size})")
                 }
             }
@@ -44,7 +48,7 @@ class OverlayLoader {
 
     companion object {
         val index = 2;
-        val archive = 4;
+        val archive = 1;
     }
 
 }

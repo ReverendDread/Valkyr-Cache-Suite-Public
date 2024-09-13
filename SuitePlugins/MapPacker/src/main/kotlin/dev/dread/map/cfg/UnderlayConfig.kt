@@ -1,3 +1,5 @@
+package dev.dread.map.cfg
+
 import store.CacheLibrary
 import store.io.impl.InputStream
 import store.io.impl.OutputStream

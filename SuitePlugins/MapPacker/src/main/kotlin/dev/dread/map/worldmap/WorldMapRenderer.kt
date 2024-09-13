@@ -1,9 +1,12 @@
+package dev.dread.map.worldmap
+
+import dev.dread.map.MapPlugin
 import javafx.embed.swing.SwingFXUtils
 import javafx.scene.canvas.Canvas
 import store.CacheLibrary
 import store.io.impl.InputStream
-import util.HightCalcuation
-import util.JagexColorPalette
+import dev.dread.map.util.HightCalcuation
+import dev.dread.map.util.JagexColorPalette
 import utility.XTEASManager
 import java.awt.Color
 import java.awt.image.BufferedImage
@@ -280,10 +283,11 @@ class WorldMapRenderer(view: Canvas) : Runnable {
                         underlay?.apply {
                             var rgb: Int = Color.BLACK.rgb
                             try {
-                                var hsl = JagexColorPalette.packHsl(hue, saturation, lightness)
-                                var index = JagexColorPalette.getJagexColorIndex(hsl, 96)
+
+                                val hsl = JagexColorPalette.packHsl(0, 0, 0)
+                                val index = JagexColorPalette.getJagexColorIndex(hsl, 96)
                                 rgb = colorPalette[index]
-                            } catch (ex: Exception) {}
+                            } catch (_: Exception) {}
                             drawMapRegion(image, x, y, rgb, -1, -1)
                         }
                     }

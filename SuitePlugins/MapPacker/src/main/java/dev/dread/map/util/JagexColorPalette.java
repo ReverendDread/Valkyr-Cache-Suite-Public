@@ -1,6 +1,4 @@
-package util;
-
-import lombok.Getter;
+package dev.dread.map.util;
 
 public class JagexColorPalette {
 
