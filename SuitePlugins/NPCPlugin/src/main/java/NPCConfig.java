@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import javafx.util.Pair;
 import store.io.impl.InputStream;
 import store.io.impl.OutputStream;
+import suite.annotation.FixedSize;
 import suite.annotation.OrderType;
 import store.plugin.extension.ConfigExtensionBase;
 import store.utilities.ReflectionUtils;
@@ -16,6 +17,12 @@ import store.utilities.ReflectionUtils;
  * Sep 19, 2019
  */
 public class NPCConfig extends ConfigExtensionBase {
+
+	private boolean rev210HeadIcons;
+
+	public void configureForRevision(int rev) {
+		this.rev210HeadIcons = rev >= NPCLoader.REV_210_NPC_ARCHIVE_KEY;
+	}
 
 	@Override
 	public void decode(int opcode, InputStream buffer) {
@@ -32,18 +39,20 @@ public class NPCConfig extends ConfigExtensionBase {
 		} else if (opcode == 12) {
 			tileSpacesOccupied = buffer.readUnsignedByte();
 		} else if (opcode == 13) {
-			stanceAnimation = buffer.readUnsignedShort();
+			standingAnimation = buffer.readUnsignedShort();
 		} else if (opcode == 14) {
 			walkAnimation = buffer.readUnsignedShort();
 		} else if (opcode == 15) {
-			anInt2165 = buffer.readUnsignedShort();
+			idleRotateLeftAnimation = buffer.readUnsignedShort();
 		} else if (opcode == 16) {
-			anInt2189 = buffer.readUnsignedShort();
+			idleRotateRightAnimation = buffer.readUnsignedShort();
 		} else if (opcode == 17) {
 			walkAnimation = buffer.readUnsignedShort();
 			rotate180Animation = buffer.readUnsignedShort();
 			rotate90RightAnimation = buffer.readUnsignedShort();
 			rotate90LeftAnimation = buffer.readUnsignedShort();
+		} else if (opcode == 18) {
+			category = buffer.readUnsignedShort();
 		} else if (opcode >= 30 && opcode < 35) {
 			options[opcode - 30] = buffer.readString();
 			if (options[opcode - 30].equalsIgnoreCase("Hidden")) {
@@ -67,12 +76,24 @@ public class NPCConfig extends ConfigExtensionBase {
 			}
 		} else if (opcode == 60) {
 			length = buffer.readUnsignedByte();
-			models_2 = new int[length];
+			chatheadModels = new int[length];
 			for (index = 0; index < length; ++index) {
-				models_2[index] = buffer.readUnsignedShort();
+				chatheadModels[index] = buffer.readUnsignedShort();
 			}
+		} else if (opcode == 74) {
+			stats[0] = buffer.readUnsignedShort();
+		} else if (opcode == 75) {
+			stats[1] = buffer.readUnsignedShort();
+		} else if (opcode == 76) {
+			stats[2] = buffer.readUnsignedShort();
+		} else if (opcode == 77) {
+			stats[3] = buffer.readUnsignedShort();
+		} else if (opcode == 78) {
+			stats[4] = buffer.readUnsignedShort();
+		} else if (opcode == 79) {
+			stats[5] = buffer.readUnsignedShort();
 		} else if (opcode == 93) {
-			renderOnMinimap = false;
+			isMinimapVisible = false;
 		} else if (opcode == 95) {
 			combatLevel = buffer.readUnsignedShort();
 		} else if (opcode == 97) {
@@ -86,9 +107,29 @@ public class NPCConfig extends ConfigExtensionBase {
 		} else if (opcode == 101) {
 			contrast = buffer.readByte();
 		} else if (opcode == 102) {
-			headIcon = buffer.readUnsignedShort();
+			if (rev210HeadIcons) {
+				int bitfield = buffer.readUnsignedByte();
+				int len = 0;
+				for (int var5 = bitfield; var5 != 0; var5 >>= 1) {
+					++len;
+				}
+				headIcons = new int[len];
+				headIconsSpriteIndex = new int[len];
+				for (int i = 0; i < len; i++) {
+					if ((bitfield & 1 << i) == 0) {
+						headIcons[i] = -1;
+						headIconsSpriteIndex[i] = -1;
+					} else {
+						headIcons[i] = buffer.readBigSmart();
+						headIconsSpriteIndex[i] = buffer.readSmartNS();
+					}
+				}
+			} else {
+				headIcons = new int[]{-1};
+				headIconsSpriteIndex = new int[]{buffer.readUnsignedShort()};
+			}
 		} else if (opcode == 103) {
-			rotation = buffer.readUnsignedShort();
+			rotationSpeed = buffer.readUnsignedShort();
 		} else if (opcode == 106) {
 			varbitIndex = buffer.readUnsignedShort();
 			if (65535 == varbitIndex) {
@@ -108,11 +149,25 @@ public class NPCConfig extends ConfigExtensionBase {
 			}
 			configs[length + 1] = -1;
 		} else if (opcode == 107) {
-			isClickable = false;
+			interactable = false;
 		} else if (opcode == 109) {
-			aBool2170 = false;
+			rotationFlag = false;
 		} else if (opcode == 111) {
-			aBool2190 = true;
+			isFollower = true;
+		} else if (opcode == 114) {
+			runAnimation = buffer.readUnsignedShort();
+		} else if (opcode == 115) {
+			runAnimation = buffer.readUnsignedShort();
+			runRotate180Animation = buffer.readUnsignedShort();
+			runRotateLeftAnimation = buffer.readUnsignedShort();
+			runRotateRightAnimation = buffer.readUnsignedShort();
+		} else if (opcode == 116) {
+			crawlAnimation = buffer.readUnsignedShort();
+		} else if (opcode == 117) {
+			crawlAnimation = buffer.readUnsignedShort();
+			crawlRotate180Animation = buffer.readUnsignedShort();
+			crawlRotateLeftAnimation = buffer.readUnsignedShort();
+			crawlRotateRightAnimation = buffer.readUnsignedShort();
 		} else if (opcode == 118) {
 			varbitIndex = buffer.readUnsignedShort();
 			if (varbitIndex == 65535) {
@@ -135,6 +190,12 @@ public class NPCConfig extends ConfigExtensionBase {
 				}
 			}
 			configs[length + 1] = var;
+		} else if (opcode == 122) {
+			isFollower = true;
+		} else if (opcode == 123) {
+			lowPriorityFollowerOps = true;
+		} else if (opcode == 124) {
+			height = buffer.readUnsignedShort();
 		} else if (opcode == 249) {
 			length = buffer.readUnsignedByte();
 			params = new HashMap<>(length);
@@ -159,9 +220,9 @@ public class NPCConfig extends ConfigExtensionBase {
 		if (models != null) {
 			buffer.writeByte(1);
 			buffer.writeByte(models.length);
-			for (int index = 0; index < models.length; index++) {
-				buffer.writeShort(models[index]);
-			}
+            for (int model : models) {
+                buffer.writeShort(model);
+            }
 		}
 		
 		if (!name.equals("null")) {
@@ -174,9 +235,9 @@ public class NPCConfig extends ConfigExtensionBase {
 			buffer.writeByte(tileSpacesOccupied);
 		}
 		
-		if (stanceAnimation > -1) {
+		if (standingAnimation > -1) {
 			buffer.writeByte(13);
-			buffer.writeShort(stanceAnimation);
+			buffer.writeShort(standingAnimation);
 		}
 		
 		if (walkAnimation > -1) {
@@ -184,14 +245,14 @@ public class NPCConfig extends ConfigExtensionBase {
 			buffer.writeShort(walkAnimation);
 		}
 		
-		if (anInt2165 > -1) {
+		if (idleRotateLeftAnimation > -1) {
 			buffer.writeByte(15);
-			buffer.writeShort(anInt2165);
+			buffer.writeShort(idleRotateLeftAnimation);
 		}
 		
-		if (anInt2189 > -1) {
+		if (idleRotateRightAnimation > -1) {
 			buffer.writeByte(16);
-			buffer.writeShort(anInt2189);
+			buffer.writeShort(idleRotateRightAnimation);
 		}
 		
 		if (walkAnimation > -1 && rotate180Animation > -1 && rotate90LeftAnimation > -1 && rotate90RightAnimation > -1) {
@@ -200,6 +261,11 @@ public class NPCConfig extends ConfigExtensionBase {
 			buffer.writeShort(rotate180Animation);
 			buffer.writeShort(rotate90RightAnimation);
 			buffer.writeShort(rotate90LeftAnimation);
+		}
+
+		if (category > 0) {
+			buffer.writeByte(18);
+			buffer.writeShort(category);
 		}
 		
 		if (options != null) {
@@ -231,19 +297,49 @@ public class NPCConfig extends ConfigExtensionBase {
 			}
 		}
 		
-		if (models_2 != null) {
+		if (chatheadModels != null) {
 			buffer.writeByte(60);
-			buffer.writeByte(models_2.length);
-			for (int index = 0; index < models_2.length; index++) {
-				buffer.writeShort(models_2[index]);
-			}
+			buffer.writeByte(chatheadModels.length);
+            for (int chatheadModel : chatheadModels) {
+                buffer.writeShort(chatheadModel);
+            }
+		}
+
+		if (stats[0] > 1) {
+			buffer.writeByte(74);
+			buffer.writeShort(stats[0]);
+		}
+
+		if (stats[1] > 1) {
+			buffer.writeByte(75);
+			buffer.writeShort(stats[1]);
+		}
+
+		if (stats[2] > 1) {
+			buffer.writeByte(76);
+			buffer.writeShort(stats[2]);
+		}
+
+		if (stats[3] > 1) {
+			buffer.writeByte(77);
+			buffer.writeShort(stats[3]);
+		}
+
+		if (stats[4] > 1) {
+			buffer.writeByte(78);
+			buffer.writeShort(stats[4]);
+		}
+
+		if (stats[5] > 1) {
+			buffer.writeByte(79);
+			buffer.writeShort(stats[5]);
 		}
 		
-		if (!renderOnMinimap) {
+		if (!isMinimapVisible) {
 			buffer.writeByte(93);
 		}
 		
-		if (combatLevel > -1) {
+		if (combatLevel > 0) {
 			buffer.writeByte(95);
 			buffer.writeShort(combatLevel);
 		}
@@ -271,15 +367,47 @@ public class NPCConfig extends ConfigExtensionBase {
 			buffer.writeByte(101);
 			buffer.writeByte(contrast);
 		}
-		
-		if (headIcon > -1) {
+
+//		public static final int REV_210_NPC_ARCHIVE_REV = 1493;
+//
+//		private int defaultHeadIconArchive = -1;
+//		private boolean rev210HeadIcons = true;
+//
+//		public NpcLoader configureForRevision(int rev)
+//		{
+//			this.rev210HeadIcons = rev >= NpcLoader.REV_210_NPC_ARCHIVE_REV;
+//			return this;
+//		}
+
+//		else if (opcode == 102)
+//		{
+//			if (!rev210HeadIcons)
+//			{
+//				def.headIconArchiveIds = new int[]{defaultHeadIconArchive};
+//				def.headIconSpriteIndex = new short[]{(short) stream.readUnsignedShort()};
+//			}
+//		}
+
+		if (headIcons != null && headIconsSpriteIndex != null) {
 			buffer.writeByte(102);
-			buffer.writeShort(headIcon);
+			int bitfield = 0;
+			for (int i = 0; i < headIcons.length; i++) {
+				if (headIcons[i] != -1 && headIconsSpriteIndex[i] != -1) {
+					bitfield |= 1 << i;
+				}
+			}
+			buffer.writeByte(bitfield);
+			for (int i = 0; i < headIcons.length; i++) {
+				if (headIcons[i] != -1 && headIconsSpriteIndex[i] != -1) {
+					buffer.writeBigSmart(headIcons[i]);
+					buffer.writeUnsignedSmart(headIconsSpriteIndex[i] - 1);
+				}
+			}
 		}
 		
-		if (rotation != 32) {
+		if (rotationSpeed != 32) {
 			buffer.writeByte(103);
-			buffer.writeShort(rotation);
+			buffer.writeShort(rotationSpeed);
 		}
 		
 		if ((varbitIndex != -1 && varpIndex != -1) && (configs != null && configs.length > 0)) {	
@@ -297,16 +425,51 @@ public class NPCConfig extends ConfigExtensionBase {
 			}
 		}
 		
-		if (!isClickable) {
+		if (!interactable) {
 			buffer.writeByte(107);
 		}
 		
-		if (!aBool2170) {
+		if (!rotationFlag) {
 			buffer.writeByte(109);
 		}
+
+		if (runAnimation != -1) {
+			buffer.writeByte(114);
+			buffer.writeShort(runAnimation);
+		}
+
+		if (runAnimation != -1 && runRotate180Animation != -1 && runRotateLeftAnimation != -1 && runRotateRightAnimation != -1) {
+			buffer.writeByte(115);
+			buffer.writeShort(runAnimation);
+			buffer.writeShort(runRotate180Animation);
+			buffer.writeShort(runRotateLeftAnimation);
+			buffer.writeShort(runRotateRightAnimation);
+		}
+
+		if (crawlAnimation != -1) {
+			buffer.writeByte(116);
+			buffer.writeShort(crawlAnimation);
+		}
+
+		if (crawlAnimation != -1 && crawlRotate180Animation != -1 && crawlRotateLeftAnimation != -1 && crawlRotateRightAnimation != -1) {
+			buffer.writeByte(117);
+			buffer.writeShort(crawlAnimation);
+			buffer.writeShort(crawlRotate180Animation);
+			buffer.writeShort(crawlRotateLeftAnimation);
+			buffer.writeShort(crawlRotateRightAnimation);
+		}
 		
-		if (aBool2190) {
-			buffer.writeByte(111);
+		if (isFollower) {
+			buffer.writeByte(122);
+		}
+
+		if (lowPriorityFollowerOps) {
+			buffer.writeByte(123);
+		}
+
+		if (height > -1) {
+			buffer.writeByte(124);
+			buffer.writeShort(height);
 		}
 		
 		if (Objects.nonNull(params)) {
@@ -338,19 +501,19 @@ public class NPCConfig extends ConfigExtensionBase {
 	public String name = "null";
 	@OrderType(priority = 6)
 	public int[] recolorToFind;
-	public int rotation = 32;
+	public int rotationSpeed = 32;
 	@OrderType(priority = 7)
 	public int[] recolorToReplace;
 	public int[] models;
-	public int[] models_2;
-	public int stanceAnimation = -1;
-	public int anInt2165 = -1;
+	public int[] chatheadModels;
+	public int standingAnimation = -1;
+	public int idleRotateLeftAnimation = -1;
 	public int tileSpacesOccupied = 1;
 	public int walkAnimation = -1;
 	@OrderType(priority = 8)
 	public int[] retextureToReplace;
 	public int rotate90RightAnimation = -1;
-	public boolean aBool2170 = true;
+	public boolean rotationFlag = true;
 	public int resizeX = 128;
 	public int contrast = 0;
 	public int rotate180Animation = -1;
@@ -358,22 +521,36 @@ public class NPCConfig extends ConfigExtensionBase {
 	@OrderType(priority = 3)
 	public String[] options = new String[5];
 	@OrderType(priority = 5)
-	public boolean renderOnMinimap = true;
+	public boolean isMinimapVisible = true;
 	@OrderType(priority = 2)
 	public int combatLevel = -1;
 	public int rotate90LeftAnimation = -1;
 	public int resizeY = 128;
 	public boolean hasRenderPriority = false;
 	public int ambient = 0;
-	public int headIcon = -1;
+	public int[] headIcons;
+	public int[] headIconsSpriteIndex;
 	public int[] configs;
 	@OrderType(priority = 7)
 	public int[] retextureToFind;
 	public int varpIndex = -1;
 	@OrderType(priority = 4)
-	public boolean isClickable = true;
-	public int anInt2189 = -1;
-	public boolean aBool2190 = false;
+	public boolean interactable = true;
+	public int idleRotateRightAnimation = -1;
+	public boolean isFollower = false;
+	public int category;
+	public int runAnimation = -1;
+	public int runRotate180Animation = -1;
+	public int runRotateLeftAnimation = -1;
+	public int runRotateRightAnimation = -1;
+	public int crawlAnimation = -1;
+	public int crawlRotate180Animation = -1;
+	public int crawlRotateLeftAnimation = -1;
+	public int crawlRotateRightAnimation = -1;
+	public boolean lowPriorityFollowerOps;
+	public int height = -1;
+	@FixedSize
+	public int[] stats = { 1, 1, 1, 1, 1, 1 };
 	public Map<Integer, Object> params = null;
 
 	private static Map<Field, Integer> fieldPriorities;

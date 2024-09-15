@@ -1,4 +1,5 @@
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import store.CacheLibrary;
 import store.cache.index.Index;
 import store.cache.index.archive.file.File;
@@ -20,20 +21,25 @@ import suite.controller.Selection;
 @Slf4j
 public class NPCLoader extends LoaderExtensionBase {
 
+	public static final int REV_210_NPC_ARCHIVE_KEY = 1493;
+
 	@Override
 	public boolean load() {
 		try {
 			Index index = CacheLibrary.get().getIndex(getIndex());
-			int[] fileIds = index.getArchive(getArchive()).getFileIds();
+			var archive = index.getArchive(getArchive());
+			var revision = archive.getRevision();
+			int[] fileIds = archive.getFileIds();
 			int size = fileIds.length;
 			for (int id : fileIds) {
-				File file = index.getArchive(getArchive()).getFile(id);
+				File file = archive.getFile(id);
 				if (file == null)
 					continue;
 				NPCConfig definition = new NPCConfig();
 				if (file.getData() == null)
 					continue;
 				definition.id = id;
+				definition.configureForRevision(revision);
 				InputStream buffer = new InputStream(file.getData());
 				readConfig(buffer, definition);
 				definitions.put(id, definition);

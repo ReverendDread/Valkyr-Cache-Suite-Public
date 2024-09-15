@@ -36,6 +36,7 @@ import lombok.Getter;
 import store.CacheLibrary;
 import store.cache.index.archive.Archive;
 import suite.Main;
+import suite.annotation.FixedSize;
 import utility.RetentionFileChooser;
 
 /**
@@ -65,7 +66,7 @@ public class NamedValueObject {
 		    }
 		    return null;
 		};
-
+		boolean fixedSize = field.isAnnotationPresent(FixedSize.class);
 		Node graphic = null;
 		//if (item != null) {
 			if (field.getType().isAssignableFrom(String.class)) {
@@ -101,28 +102,31 @@ public class NamedValueObject {
 				comboBox.setEditable(true);
 				comboBox.getSelectionModel().select(0);
 				comboBox.setValue(items.isEmpty() ? "" : items.get(0));
+				hbox.getChildren().add(comboBox);
 
-				Button add = new Button("Add");
-				add.setOnAction((event) -> {
-					String text = comboBox.getEditor().getText();
-					comboBox.getItems().add(text.isEmpty() ? "null" : text);
-					comboBox.getSelectionModel().selectLast();
-				});
-
-				Button remove = new Button("Remove");
-				remove.setOnAction((event) -> {
-					int index = comboBox.getSelectionModel().getSelectedIndex();
-					if (index != -1)
-						comboBox.getItems().remove(index);
-				});
+				if (!fixedSize) {
+					Button add = new Button("Add");
+					add.setOnAction((event) -> {
+						String text = comboBox.getEditor().getText();
+						comboBox.getItems().add(text.isEmpty() ? "null" : text);
+						comboBox.getSelectionModel().selectLast();
+					});
+					hbox.getChildren().add(add);
+					Button remove = new Button("Remove");
+					remove.setOnAction((event) -> {
+						int index = comboBox.getSelectionModel().getSelectedIndex();
+						if (index != -1)
+							comboBox.getItems().remove(index);
+					});
+					hbox.getChildren().add(remove);
+				}
 
 				Button set = new Button("Set");
 				set.setOnAction((event) -> {
 					String newValue = comboBox.getEditor().getText();
 					comboBox.getItems().set(comboBox.getSelectionModel().getSelectedIndex(), newValue);
 				});
-				
-				hbox.getChildren().addAll(comboBox, add, remove, set);
+				hbox.getChildren().add(set);
 				graphic = (hbox);
 			} else if (field.getType().isAssignableFrom(int[].class)) {
 				HBox hbox = new HBox();
@@ -138,20 +142,24 @@ public class NamedValueObject {
 				comboBox.setEditable(true);
 				comboBox.getSelectionModel().select(0);
 				comboBox.setValue(items.isEmpty() ? "" : items.get(0));
+				hbox.getChildren().add(comboBox);
 
-				Button add = new Button("Add");
-				add.setOnAction((event) -> {
-					String text = comboBox.getEditor().getText();
-					comboBox.getItems().add(text.isEmpty() ? "0" : text);
-					comboBox.getSelectionModel().selectLast();
-				});
-				
-				Button remove = new Button("Remove");
-				remove.setOnAction((event) -> {
-					int index = comboBox.getSelectionModel().getSelectedIndex();
-					if (index != -1)
-						comboBox.getItems().remove(index);
-				});
+				if (!fixedSize) {
+					Button add = new Button("Add");
+					add.setOnAction((event) -> {
+						String text = comboBox.getEditor().getText();
+						comboBox.getItems().add(text.isEmpty() ? "0" : text);
+						comboBox.getSelectionModel().selectLast();
+					});
+					hbox.getChildren().add(add);
+					Button remove = new Button("Remove");
+					remove.setOnAction((event) -> {
+						int index = comboBox.getSelectionModel().getSelectedIndex();
+						if (index != -1)
+							comboBox.getItems().remove(index);
+					});
+					hbox.getChildren().add(remove);
+				}
 				
 				Button set = new Button("Set");
 				set.setOnAction((event) -> {
@@ -161,7 +169,7 @@ public class NamedValueObject {
 					comboBox.getItems().set(comboBox.getSelectionModel().getSelectedIndex(), newValue);
 				});
 
-				hbox.getChildren().setAll(comboBox, add, remove, set);
+				hbox.getChildren().add(set);
 
 				if (field.getName().equalsIgnoreCase("models")) {
 					Button dump = new Button("Dump models");
@@ -203,24 +211,29 @@ public class NamedValueObject {
 				comboBox.setEditable(true);
 				comboBox.getSelectionModel().select(0);
 				comboBox.setValue(items.isEmpty() ? "" : items.get(0));
-				Button add = new Button("Add");
-				add.setOnAction((event) -> {
-					String text = comboBox.getEditor().getText();
-					comboBox.getItems().add(text.isEmpty() ? "null" : text);
-					comboBox.getSelectionModel().selectLast();
-				});
-				Button remove = new Button("Remove");
-				remove.setOnAction((event) -> {
-					int index = comboBox.getSelectionModel().getSelectedIndex();
-					if (index != -1)
-						comboBox.getItems().remove(index);
-				});
+				hbox.getChildren().add(comboBox);
+				if (!fixedSize) {
+					Button add = new Button("Add");
+					add.setOnAction((event) -> {
+						String text = comboBox.getEditor().getText();
+						comboBox.getItems().add(text.isEmpty() ? "null" : text);
+						comboBox.getSelectionModel().selectLast();
+					});
+					hbox.getChildren().add(add);
+					Button remove = new Button("Remove");
+					remove.setOnAction((event) -> {
+						int index = comboBox.getSelectionModel().getSelectedIndex();
+						if (index != -1)
+							comboBox.getItems().remove(index);
+					});
+					hbox.getChildren().add(remove);
+				}
 				Button set = new Button("Set");
 				set.setOnAction((event) -> {
 					String newValue = comboBox.getEditor().getText();
 					comboBox.getItems().set(comboBox.getSelectionModel().getSelectedIndex(), newValue);
 				});
-				hbox.getChildren().setAll(comboBox, add, remove, set);
+				hbox.getChildren().add(set);
 				graphic = (hbox);
 			} else if (field.getType().isAssignableFrom(HashMap.class)) {
 				HBox hbox = new HBox();
@@ -243,8 +256,10 @@ public class NamedValueObject {
 				
 				keys.valueProperty().addListener((obs, old, newVal) -> values.getSelectionModel().select(keys.getItems().indexOf(newVal)));
 				values.valueProperty().addListener((obs, old, newVal) -> keys.getSelectionModel().select(values.getItems().indexOf(newVal)));
-				
-				Button add = new Button("Add Nig");
+				hbox.getChildren().add(keys);
+				hbox.getChildren().add(values);
+
+				Button add = new Button("Add");
 				add.setOnAction((event) -> {
 					String text = keys.getEditor().getText();
 					keys.getItems().add(text.isEmpty() ? "0" : text);
@@ -253,6 +268,7 @@ public class NamedValueObject {
 					values.getItems().add(text.isEmpty() ? "null" : text);
 					values.getSelectionModel().selectLast();
 				});
+				hbox.getChildren().add(add);
 				
 				Button remove = new Button("Remove");
 				remove.setOnAction((event) -> {
@@ -262,6 +278,7 @@ public class NamedValueObject {
 						values.getItems().remove(index);
 					}
 				});
+				hbox.getChildren().add(remove);
 				
 				Button set = new Button("Set");
 				set.setOnAction(event -> {
@@ -270,8 +287,7 @@ public class NamedValueObject {
 					newValue = values.getEditor().getText();
 					values.getItems().set(values.getSelectionModel().getSelectedIndex(), newValue);
 				});
-				
-				hbox.getChildren().setAll(keys, values, add, remove, set);
+				hbox.getChildren().add(set);
 				graphic = (hbox);
 			} else {
 				graphic = (null);

@@ -6,7 +6,7 @@ import store.plugin.PluginType;
  * 
  */
 
-@PluginDescriptor(author = "ReverendDread", description = "A simple configuration editor.", type = PluginType.ITEM, version = "183")
+@PluginDescriptor(author = "ReverendDread", type = PluginType.ITEM, version = "223")
 public class ItemPlugin extends Plugin {
 
 	@Override
